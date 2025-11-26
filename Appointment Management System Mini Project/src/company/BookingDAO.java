@@ -29,12 +29,12 @@ public class BookingDAO {
                 );
                 bookings.add(booking);
             }
-            // Log for terminal
+
             System.out.println("=== DAO DEBUG: Fetched " + bookings.size() + " bookings for companyId=" + companyId + " ===");
             if (bookings.isEmpty()) {
                 System.out.println("=== DAO: No matches – verify DB data for this ID ===");
             } else {
-                // Bonus: Print first row for sanity
+
                 System.out.println("=== DAO Sample: " + bookings.get(0).getCustomerName() + " on " + bookings.get(0).getBookingDate() + " ===");
             }
 
@@ -48,4 +48,5 @@ public class BookingDAO {
 
         return bookings;
     }
+
 }
