@@ -61,7 +61,6 @@ public class CompanyProfileSetup {
         descriptionArea = createStyledTextArea("Detailed description...");
         formVBox.getChildren().add(createLabeledVBox("Description:", descriptionArea));
 
-        // Logo upload
         VBox logoBox = new VBox(5);
         Label logoLabel = new Label("Company Logo:");
         browseLogoBtn = createStyledButton("Browse", e -> browseLogo());
@@ -96,13 +95,13 @@ public class CompanyProfileSetup {
         formVBox.getChildren().add(createLabeledVBox("Address:", addressArea));
 
         submitBtn = createStyledButton("Save Company Profile", e -> saveProfile());
-submitBtn.getStyleClass().add("save-button");
+        submitBtn.getStyleClass().add("save-button");
 
-HBox buttonContainer = new HBox(submitBtn);
-buttonContainer.setAlignment(Pos.CENTER);
-buttonContainer.setPadding(new Insets(20, 0, 20, 0));
+        HBox buttonContainer = new HBox(submitBtn);
+        buttonContainer.setAlignment(Pos.CENTER);
+        buttonContainer.setPadding(new Insets(20, 0, 20, 0));
 
-formVBox.getChildren().add(buttonContainer);
+        formVBox.getChildren().add(buttonContainer);
 
 
         return formVBox;
@@ -176,7 +175,7 @@ formVBox.getChildren().add(buttonContainer);
 
     private void saveProfile() {
     CompanyProfile cp = new CompanyProfile();
-    cp.setCompanyId(companyId); // Must exist in 'companies' table
+    cp.setCompanyId(companyId);
     cp.setOwnerName(ownerNameField.getText());
     cp.setCompanyName(companyNameField.getText());
     cp.setBusinessType(businessTypeCombo.getValue());
@@ -209,3 +208,4 @@ formVBox.getChildren().add(buttonContainer);
 }
 
 }
+
