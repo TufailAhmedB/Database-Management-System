@@ -21,10 +21,8 @@ public class AppointmentBooking {
     private String selectedSlotTime;
     private AppointmentDAO appointmentDAO = new AppointmentDAO();
 
-    // Service fields
     Label lblServiceName, lblProvider, lblCustomers, lblDescription;
 
-    // Company fields
     Label lblOwner, lblCompany, lblBusinessType, lblPhone,
           lblEmail, lblWebsite, lblWorkTime, lblOffDays, lblAddress;
 
@@ -86,8 +84,6 @@ public class AppointmentBooking {
         return scene;
     }
 
-    // ---------------- Company Section -------------------
-
     private VBox createCompanySelectBox() {
         VBox box = new VBox(10);
 
@@ -103,7 +99,6 @@ public class AppointmentBooking {
     private void onCompanySelected() {
         String company = companyCombo.getValue();
 
-        // Show service selection
         serviceCombo.setDisable(false);
         serviceCombo.setValue(null);
 
@@ -113,7 +108,6 @@ public class AppointmentBooking {
         loadServicesForCompany(company);
     }
 
-    // ---------------- Service Section -------------------
 
     private VBox createServiceSelectSection() {
         VBox box = new VBox(10);
@@ -152,22 +146,18 @@ public class AppointmentBooking {
     serviceDetailsBox.setVisible(true);
 
     ObservableList<String> availableDays = FXCollections.observableArrayList();
-    String[] allPossibleDays = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"}; // Use all days for a comprehensive check
-
+    String[] allPossibleDays = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
     for (String day : allPossibleDays) {
-        // A day is "available" if the service offers at least one slot 
-        // AND that slot is not yet fully booked.
         for (String slot : appointmentDAO.getSlots(service, day)) {
             if (appointmentDAO.isSlotAvailable(service, day, slot)) {
                 availableDays.add(day);
-                break; // Found one available slot, so the day is available, move to the next day
+                break;
             }
         }
     }
 
     dayCombo.setItems(availableDays);
     
-    // Optional: Disable dayCombo if no days are available
     if (availableDays.isEmpty()) {
         dayCombo.setPromptText("No available days for this service");
         dayCombo.setDisable(true);
@@ -175,7 +165,6 @@ public class AppointmentBooking {
 }
 
 
-    // ---------------- Service Details -------------------
 
     private VBox createServiceDetailsBox() {
         VBox box = new VBox(6);
@@ -194,7 +183,6 @@ public class AppointmentBooking {
         return box;
     }
 
-    // ---------------- Slots -------------------
 
     private VBox createSlotSection() {
         VBox box = new VBox(10);
@@ -219,7 +207,6 @@ public class AppointmentBooking {
     for(String slot : appointmentDAO.getSlots(service, day)) {
         Button btn = new Button(slot);
         
-        // ✅ If slot full, disable + mark
         if (!appointmentDAO.isSlotAvailable(service, day, slot)) {
             btn.setDisable(true);
             btn.setStyle("-fx-background-color:#ffcccc; -fx-text-fill:#333;");
@@ -257,7 +244,6 @@ public class AppointmentBooking {
 }
 
 
-    // --------------- Customer Form -------------------
 
     private VBox createFormSection() {
         VBox box = new VBox(12);
@@ -309,7 +295,8 @@ public class AppointmentBooking {
             if(saved) {
                 new Alert(Alert.AlertType.INFORMATION, "✅ Appointment Saved Successfully!").show();
                 onDaySelected(); 
-                formVBox.setVisible(false);                 companyDetailsBox.setVisible(false); // Hide the company details
+                formVBox.setVisible(false);
+                companyDetailsBox.setVisible(false);
                 selectedSlotTime = null;
             } else {
                 new Alert(Alert.AlertType.ERROR, "❌ Failed to save booking!").show();
@@ -320,7 +307,6 @@ public class AppointmentBooking {
         return box;
     }
 
-    // -------------- Company Details Section -----------------
 
     private VBox createCompanyDetailsBox() {
         VBox box = new VBox(6);
@@ -346,7 +332,6 @@ public class AppointmentBooking {
         return box;
     }
 
-    // -------------- Dummy Data Loader -----------------
 
     private void loadDummyData() {
     companyCombo.setItems(appointmentDAO.getCompanies());
@@ -355,5 +340,6 @@ public class AppointmentBooking {
     private void loadServicesForCompany(String company) {
     serviceCombo.setItems(appointmentDAO.getServicesByCompany(company));
 }
+
 
 }
