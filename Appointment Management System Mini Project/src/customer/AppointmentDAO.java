@@ -10,7 +10,6 @@ import javafx.collections.ObservableList;
 
 public class AppointmentDAO {
 
-    // 1️⃣ Get all company names
     public ObservableList<String> getCompanies() {
         ObservableList<String> companies = FXCollections.observableArrayList();
         String sql = "SELECT company_name FROM company_profiles";
@@ -28,7 +27,6 @@ public class AppointmentDAO {
         return companies;
     }
 
-    // 2️⃣ Get services by company
     public ObservableList<String> getServicesByCompany(String company) {
         ObservableList<String> services = FXCollections.observableArrayList();
         String sql = "SELECT s.service_name FROM services s "
@@ -49,7 +47,6 @@ public class AppointmentDAO {
         return services;
     }
 
-    // 3️⃣ Get service details
     public Service getServiceDetails(String service) {
         String sql = "SELECT s.service_name, CONCAT(st.first_name, ' ', st.last_name) AS provider_name, "
                    + "s.num_customers, s.description "
@@ -77,7 +74,6 @@ public class AppointmentDAO {
         return null;
     }
 
-    // 4️⃣ Get company details
     public Company getCompanyDetails(String companyName) {
         String sql = "SELECT * FROM company_profiles WHERE company_name = ?";
 
@@ -106,7 +102,6 @@ public class AppointmentDAO {
         return null;
     }
 
-    // 5️⃣ Get time slots by staff and day
     public List<String> getSlots(String serviceName, String day) {
         List<String> slots = new ArrayList<>();
 
@@ -132,7 +127,6 @@ public class AppointmentDAO {
         return slots;
     }
 
-    // 1️⃣ Get company ID by name
     public int getCompanyId(String companyName) {
         String sql = "SELECT company_id FROM company_profiles WHERE company_name = ?";
         try (Connection conn = DBHelper.getConnection();
@@ -147,7 +141,7 @@ public class AppointmentDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return -1; // Return -1 or throw an exception if not found
+        return -1; 
     }
 
     public boolean saveBooking(Booking b, int company_id) {
@@ -173,14 +167,12 @@ public class AppointmentDAO {
         }
     }
 
-    // ✅ Check if seats available for a given service, day & slot
     public boolean isSlotAvailable(String service, String day, String slot) {
         String capacitySql = "SELECT num_customers FROM services WHERE service_name = ?";
         String bookingSql = "SELECT COUNT(*) AS total FROM bookings WHERE service_name = ? AND day = ? AND slot_time = ?";
 
         try (Connection conn = DBHelper.getConnection()) {
 
-            // 1️⃣ Get capacity
             int capacity = 0;
             try (PreparedStatement stmt = conn.prepareStatement(capacitySql)) {
                 stmt.setString(1, service);
@@ -188,7 +180,6 @@ public class AppointmentDAO {
                 if (rs.next()) capacity = rs.getInt("num_customers");
             }
 
-            // 2️⃣ Count bookings
             int booked = 0;
             try (PreparedStatement stmt2 = conn.prepareStatement(bookingSql)) {
                 stmt2.setString(1, service);
@@ -198,7 +189,7 @@ public class AppointmentDAO {
                 if (rs2.next()) booked = rs2.getInt("total");
             }
 
-            return booked < capacity; // ✅ True means slot available
+            return booked < capacity; 
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -207,3 +198,4 @@ public class AppointmentDAO {
     }
 
 }
+
