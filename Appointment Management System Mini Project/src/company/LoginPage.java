@@ -31,7 +31,6 @@ public class LoginPage {
         root.setPadding(new Insets(40));
         root.setStyle("-fx-background-color: white;");
 
-        // BACK BUTTON
         Button backBtn = new Button("← Back");
             backBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #0078ff; -fx-font-size: 14;");
             backBtn.setOnAction(e -> {
@@ -40,32 +39,24 @@ public class LoginPage {
             primaryStage.show();
         });
 
-// Header (Start of the replacement block)
-VBox header = new VBox(20);
-header.setAlignment(Pos.CENTER);
+        VBox header = new VBox(20);
+        header.setAlignment(Pos.CENTER);
 
-titleLabel = new Label("Create Account");
-titleLabel.setFont(Font.font("System", FontWeight.BOLD, 24));
+        titleLabel = new Label("Create Account");
+        titleLabel.setFont(Font.font("System", FontWeight.BOLD, 24));
 
-subtitleLabel = new Label("Sign up for a new account");
-subtitleLabel.setFont(Font.font("System", 14));
+        subtitleLabel = new Label("Sign up for a new account");
+        subtitleLabel.setFont(Font.font("System", 14));
 
-header.getChildren().addAll(titleLabel, subtitleLabel);
+        header.getChildren().addAll(titleLabel, subtitleLabel);
 
-// FIX: Combine the Back Button and the centered Header titles.
-// 1. Put the back button in its own HBox for clean alignment.
-HBox backButtonContainer = new HBox(backBtn);
-backButtonContainer.setAlignment(Pos.CENTER_LEFT);
+        HBox backButtonContainer = new HBox(backBtn);
+        backButtonContainer.setAlignment(Pos.CENTER_LEFT);
 
-// 2. Put both the HBox (back button) and the VBox (titles) into a single VBox for the top section.
-VBox topSection = new VBox(10, backButtonContainer, header);
-topSection.setAlignment(Pos.TOP_LEFT); // You can keep the outer VBox alignment as TOP_LEFT or TOP_CENTER
+        VBox topSection = new VBox(10, backButtonContainer, header);
+        topSection.setAlignment(Pos.TOP_LEFT);
+        root.setTop(topSection);
 
-// Set the combined VBox as the top of the BorderPane
-root.setTop(topSection);
-// Header (End of the replacement block)
-
-        // Form Section
         VBox formContainer = new VBox(20);
         formContainer.setAlignment(Pos.CENTER);
         formContainer.setPrefWidth(350);
@@ -77,7 +68,6 @@ root.setTop(topSection);
         form.setMaxWidth(350);
         form.setAlignment(Pos.CENTER_LEFT);
 
-        // Toggle Buttons
         ToggleGroup toggleGroup = new ToggleGroup();
         signupToggle = new ToggleButton("Sign Up");
         signupToggle.setToggleGroup(toggleGroup);
@@ -92,7 +82,6 @@ root.setTop(topSection);
         loginToggle.setOnAction(e -> switchToLogin());
         signupToggle.setOnAction(e -> switchToSignup());
 
-        // Username Field
         Label usernameLabel = new Label("Username");
         usernameLabel.setFont(Font.font("System", FontWeight.MEDIUM, 12));
 
@@ -102,7 +91,6 @@ root.setTop(topSection);
         usernameField.setMaxWidth(300);
         usernameField.setStyle("-fx-border-color: #ccc; -fx-padding: 8;");
 
-        // Email Field (for signup only)
         emailLabel = new Label("Email");
         emailLabel.setFont(Font.font("System", FontWeight.MEDIUM, 12));
         emailLabel.setVisible(true);
@@ -114,7 +102,6 @@ root.setTop(topSection);
         emailField.setStyle("-fx-border-color: #ccc; -fx-padding: 8;");
         emailField.setVisible(true);
 
-        // Password Field
         Label passwordLabel = new Label("Password");
         passwordLabel.setFont(Font.font("System", FontWeight.MEDIUM, 12));
 
@@ -124,7 +111,6 @@ root.setTop(topSection);
         passwordField.setMaxWidth(300);
         passwordField.setStyle("-fx-border-color: #ccc; -fx-padding: 8;");
 
-        // Confirm Password Field (for signup only)
         confirmLabel = new Label("Confirm Password");
         confirmLabel.setFont(Font.font("System", FontWeight.MEDIUM, 12));
         confirmLabel.setVisible(true);
@@ -136,7 +122,6 @@ root.setTop(topSection);
         confirmPasswordField.setStyle("-fx-border-color: #ccc; -fx-padding: 8;");
         confirmPasswordField.setVisible(true);
 
-        // Action Button
         loginButton = new Button("Create Account");
         loginButton.setPrefWidth(300);
         loginButton.setMaxWidth(300);
@@ -151,7 +136,6 @@ root.setTop(topSection);
             handleAction(username, email, password, confirmPassword, primaryStage);
         });
 
-        // Forgot Password Link
         Hyperlink forgotLink = new Hyperlink("Forgot Password?");
         forgotLink.setAlignment(Pos.CENTER_RIGHT);
         forgotLink.setOnAction(e -> showResetPasswordDialog());
@@ -228,7 +212,6 @@ root.setTop(topSection);
                         showAlert("Error", "Passwords do not match.");
                         return ButtonType.CANCEL;
                     }
-                    // TODO: Implement actual password reset logic
                     showAlert("Success", "Password reset successfully for " + user + ".");
                     dialog.close();
                     return submitButton;
@@ -249,14 +232,13 @@ root.setTop(topSection);
         emailField.setVisible(false);
         confirmLabel.setVisible(false);
         confirmPasswordField.setVisible(false);
-        // Reset toggle styles to default
         loginToggle.setStyle("");
         signupToggle.setStyle("");
 
         emailField.clear();
-confirmPasswordField.clear();
-passwordField.clear();
-usernameField.clear();
+        confirmPasswordField.clear();
+        passwordField.clear();
+        usernameField.clear();
 
     }
 
@@ -269,14 +251,13 @@ usernameField.clear();
         emailField.setVisible(true);
         confirmLabel.setVisible(true);
         confirmPasswordField.setVisible(true);
-        // Reset toggle styles to default
         loginToggle.setStyle("");
         signupToggle.setStyle("");
 
         emailField.clear();
-confirmPasswordField.clear();
-passwordField.clear();
-usernameField.clear();
+        confirmPasswordField.clear();
+        passwordField.clear();
+        usernameField.clear();
 
     }
 
@@ -300,14 +281,13 @@ usernameField.clear();
             showAlert("Signup Failed", "Username or Email already exists.");
         }
 
-    } else { // LOGIN
+    } else { 
         int companyId = CompanyAuthDAO.login(username, password);
         if (companyId == -1) {
             showAlert("Login Failed", "Invalid username or password.");
             return;
         }
 
-        // Redirect
         if (CompanyAuthDAO.hasProfile(companyId)) {
             showAlert("Login Successful", "Welcome back!");
             stage.setScene(ServiceSessionManager.createScene(stage, companyId));
@@ -327,9 +307,8 @@ usernameField.clear();
         alert.showAndWait();
     }
 
-    // Alias method so other pages can call LoginPage.createScene(stage)
-public static Scene createScene(Stage stage) {
-    return createLoginScene(stage);
-}
+    public static Scene createScene(Stage stage) {
+        return createLoginScene(stage);
+    }
 
 }
