@@ -6,7 +6,6 @@ import java.sql.*;
 
 public class CompanyAuthDAO {
 
-    // Hash password using SHA-256
     private static String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -23,7 +22,6 @@ public class CompanyAuthDAO {
         }
     }
 
-    // Sign Up (Insert Company)
     public static boolean signup(String username, String email, String password) {
         String sql = "INSERT INTO companies (username, email, password_hash) VALUES (?, ?, ?)";
 
@@ -38,14 +36,13 @@ public class CompanyAuthDAO {
             return true;
 
         } catch (SQLIntegrityConstraintViolationException e) {
-            return false; // Username or email already exists
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    // Login → return company_id or -1 if fail
     public static int login(String username, String password) {
         String sql = "SELECT company_id, password_hash FROM companies WHERE username = ?";
 
@@ -62,16 +59,15 @@ public class CompanyAuthDAO {
                 if (storedHash.equals(enteredHash)) {
                     return rs.getInt("company_id");
                 } else {
-                    return -1; // Wrong password
+                    return -1;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return -1; // no user
+        return -1;
     }
 
-    // Check if profile exists
     public static boolean hasProfile(int companyId) {
         String sql = "SELECT company_id FROM company_profiles WHERE company_id = ?";
 
@@ -89,3 +85,4 @@ public class CompanyAuthDAO {
     }
 
 }
+
