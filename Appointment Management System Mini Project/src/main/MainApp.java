@@ -1,4 +1,3 @@
-// MainApp.java - Single-window scene switching (stable Java features only)
 package main;
 
 import javafx.application.Application;
@@ -35,22 +34,18 @@ public void start(Stage stage) {
     primaryStage = stage;
     primaryStage.setTitle("Appointment Management and Booking System");
 
-    // Root BorderPane for easy content switching
     BorderPane root = new BorderPane();
     root.setStyle("-fx-background-color: #f8f9fa;");
 
-    // Header (fixed at top)
     VBox header = createHeader();
     root.setTop(header);
 
-    // Initial Hero Content (center)
     heroContent = createHeroContent();
     root.setCenter(heroContent);
 
-    mainScene = new Scene(root, 800, 800);  // Fixed size
+    mainScene = new Scene(root, 800, 800);  
     primaryStage.setScene(mainScene);
     
-    // Lock size to 800x700 (prevent resize)
     primaryStage.setMinWidth(800);
     primaryStage.setMinHeight(800);
     primaryStage.setMaxWidth(1600);
@@ -63,7 +58,7 @@ public void start(Stage stage) {
         headerLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 18));
         headerLabel.setTextFill(Color.WHITE);
         headerLabel.setAlignment(Pos.CENTER);
-        VBox headerVBox = new VBox(headerLabel);  // Renamed to avoid conflicts
+        VBox headerVBox = new VBox(headerLabel);  
         headerVBox.setAlignment(Pos.CENTER);
         headerVBox.setBackground(new Background(new BackgroundFill(
             new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
@@ -87,7 +82,6 @@ public void start(Stage stage) {
         descLabel.setMaxWidth(600);
         descLabel.setAlignment(Pos.CENTER);
 
-        // In createHeroContent() method:
 Button registerBtn = new Button("Register");
 registerBtn.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
 styleButton(registerBtn, "#4CAF50", "#45a049");
@@ -123,7 +117,6 @@ bookBtn.setOnAction(e -> switchToApp(() -> AppointmentBooking.createScene(), "Ap
     try {
         Scene newScene = sceneSupplier.get();
         if (newScene != null) {
-            // No setWidth/setHeight—enforced in constructors
             primaryStage.setScene(newScene);
             primaryStage.setTitle(title);
             addBackButton(newScene.getRoot());
@@ -151,9 +144,8 @@ bookBtn.setOnAction(e -> switchToApp(() -> AppointmentBooking.createScene(), "Ap
     if (root instanceof BorderPane bp) {
         bp.setTop(backContainer);
     } else if (root instanceof VBox vb) {
-        vb.getChildren().add(0, backContainer);  // Prepend to top of VBox
+        vb.getChildren().add(0, backContainer);  
     }
-    // Add more layouts if needed (e.g., StackPane)
 }
     public MainApp() {
     instance = this;
@@ -170,4 +162,5 @@ public Scene getMainScene() {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
